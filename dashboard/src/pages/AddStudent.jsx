@@ -141,7 +141,7 @@ function AddStudent() {
        <main className="content">
 
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px", alignItems: 'center', marginTop: '40px', marginBottom: '20px' }}>
-              <Typography variant="h4">Product List</Typography>
+              <Typography variant="h4">Student List</Typography>
               <Button 
                 variant="contained" 
                 color="primary" 
