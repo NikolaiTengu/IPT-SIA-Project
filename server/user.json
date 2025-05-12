@@ -1,11 +1,11 @@
 [
   {
     "id": "132666708",
-    "fname": "Andreev",
-    "mname": "Buhong",
-    "lname": "Abellera",
-    "username": "Haru",
-    "password": "Eliza",
+    "fname": "Martin",
+    "mname": "William",
+    "lname": "Wong",
+    "email": "Admin01@gmail.com",
+    "password": "Admin1234",
     "role": "Admin"
   },
   {
@@ -13,7 +13,7 @@
     "fname": "fghj",
     "mname": "ghjk",
     "lname": "fghjk",
-    "username": "Mew",
+    "email": "MeowMew@gmail.com",
     "password": "Meow",
     "role": "Student"
   },
@@ -22,7 +22,7 @@
     "fname": "jelo",
     "mname": "lulu",
     "lname": "nieves",
-    "username": "francJ",
+    "email": "francJ",
     "password": "jelo1234",
     "role": "boss"
   }

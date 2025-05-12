@@ -1,99 +1,104 @@
+/* Reset & Base */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    color: #1e1e1e;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+/* Login Container */
 .loginPage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 95vh;
-    color: white;
-}
-
-.ring {
-    width: 500px;
-    height: 500px;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    pointer-events: none;
-}
-
-.ring i {
-    position: absolute;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    pointer-events: auto;
-    pointer-events: none;
+    max-width: 420px;
+    position: relative;
+    z-index: 1;
 }
 
-.ring i:nth-child(1) {
-    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-    animation: animate 6s linear infinite;
-    color: #acacac;
-    border: 6px solid RED;
-    filter: drop-shadow(0 0 20px RED);
-}
-
-.ring i:nth-child(2) {
-    border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
-    animation: animate 4s linear infinite;
-    color: #acacac;
-    border: 6px solid yellow;
-    filter: drop-shadow(0 0 20px yellow);
-}
-
-.ring i:nth-child(3) {
-    border-radius: 41% 44% 56% 59% / 38% 62% 63% 37%;
-    animation: animate 10s linear infinite;
-    color: #acacac;
-    border: 6px solid lime;
-    filter: drop-shadow(0 0 20px limme);
-}
-
-@keyframes animate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
+/* Title */
 .login h1 {
-    margin-bottom: 5 px;
+    font-size: 2rem;
+    color: #111;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
     text-align: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
 }
 
+/* Inputs */
 input {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 5px;
-    color: white;
-    box-sizing: border-box;     
-}   
+    padding: 0.9rem 1rem;
+    margin: 0.5rem 0 1rem;
+    background-color: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
 
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
 
+/* Button Area */
 .actionButtons {
-    margin: 20px;
+    margin-top: 1.5rem;
     display: flex;
-    justify-content: center;
-    padding: 10px;
-    gap: 50px;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 .actionButtons button {
-    width: 120px;
-    height: 40px;
-    background-color: #333333;
+    flex: 1;
+    height: 45px;
+    background-color: #111;
+    border: none;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .actionButtons button:hover {
-    background-color: #6200EE;
-    color: white;
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 0 10px #007bff;
 }
+
 
 p {
     text-align: center;
-    color: white;
+    color: #666;
+    font-size: 0.85rem;
+    margin-top: 2rem;
+}
+
+
+.loginPage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 4px;
+    background: #007bff;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
 }

@@ -150,10 +150,10 @@ app.delete("/deleteuser/:id", (req, res) => {
 app.use(express.json());
 
 app.post("/login", (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     const users = loadUsers();
 
-    const user = users.find(user => user.username === username && user.password === password);
+    const user = users.find(user => user.email === email && user.password === password);
     
     if (user) {
         res.json({ success: true });
@@ -165,4 +165,3 @@ app.post("/login", (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
