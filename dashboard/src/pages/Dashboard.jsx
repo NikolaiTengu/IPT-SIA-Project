@@ -38,7 +38,7 @@ function Dashboard() {
 
   return (
     <div className="dash">
-      <h1>Welcome to Atlas University!🍚</h1>
+      <h1>Welcome to Atlas University!</h1>
       <div className="clock">
         <h2 id="time"></h2>
         <h2 id="date"></h2>
