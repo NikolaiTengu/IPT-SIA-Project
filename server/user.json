@@ -1,29 +1,20 @@
 [
   {
-    "id": "132666708",
-    "fname": "Martin",
-    "mname": "William",
-    "lname": "Wong",
-    "email": "Admin01@gmail.com",
-    "password": "Admin1234",
-    "role": "Admin"
+    "id": "1747107622026",
+    "email": "jumagbasmarlowe@gmail.com",
+    "password": "MarloweIan2730",
+    "firstname": "Marlowe",
+    "lastname": "Ian",
+    "middlename": "Pastores",
+    "role": "student"
   },
   {
-    "id": "34567890",
-    "fname": "fghj",
-    "mname": "ghjk",
-    "lname": "fghjk",
-    "email": "MeowMew@gmail.com",
-    "password": "Meow",
-    "role": "Student"
-  },
-  {
-    "id": "123456789",
-    "fname": "jelo",
-    "mname": "lulu",
-    "lname": "nieves",
-    "email": "francJ",
-    "password": "jelo1234",
-    "role": "boss"
+    "id": "1747108954351",
+    "email": "Asterionofficialemail@gmail.com",
+    "password": "Asterionofficial001@",
+    "firstname": "Asterion",
+    "lastname": "Monochrome",
+    "middlename": "Juas",
+    "role": "employee"
   }
 ]

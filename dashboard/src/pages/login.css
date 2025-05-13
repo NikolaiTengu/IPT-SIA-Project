@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #ffffff;
-    color: #1e1e1e;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #e0e0e0;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -13,45 +13,61 @@ body {
 
 /* Login Container */
 .loginPage {
-    background: #f9f9f9;
-    border: 1px solid #ccc;
+    background: #1e293b;
+    border: 2px solid #0ea5e9;
     border-radius: 12px;
     padding: 3rem 2.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 25px rgba(14, 165, 233, 0.4);
     width: 100%;
-    max-width: 420px;
+    max-width: 460px;
     position: relative;
     z-index: 1;
+    overflow: hidden;
+}
+
+/* Neon Accent Strip */
+.loginPage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 6px;
+    background: linear-gradient(to bottom, #38bdf8, #0ea5e9);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: 0 0 12px #38bdf8;
 }
 
 /* Title */
 .login h1 {
-    font-size: 2rem;
-    color: #111;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.5px;
+    font-size: 2.2rem;
+    color: #38bdf8;
+    margin-bottom: 2rem;
+    letter-spacing: 1.5px;
     text-align: center;
-    border-bottom: 2px solid #007bff;
+    text-shadow: 0 0 8px #0ea5e9;
+    font-weight: 700;
+    border-bottom: 2px solid #0ea5e9;
     padding-bottom: 0.5rem;
 }
 
 /* Inputs */
 input {
     width: 100%;
-    padding: 0.9rem 1rem;
-    margin: 0.5rem 0 1rem;
-    background-color: #ffffff;
-    border: 1px solid #d0d0d0;
-    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0 1.2rem;
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 6px;
     font-size: 1rem;
-    color: #333;
-    box-sizing: border-box;
+    color: #e2e8f0;
     transition: all 0.3s ease;
 }
 
 input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    border-color: #0ea5e9;
+    box-shadow: 0 0 10px #0ea5e9;
     outline: none;
 }
 
@@ -60,45 +76,33 @@ input:focus {
     margin-top: 1.5rem;
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    gap: 15px;
 }
 
 .actionButtons button {
     flex: 1;
-    height: 45px;
-    background-color: #111;
+    height: 48px;
+    background-color: #0ea5e9;
     border: none;
-    color: white;
-    font-size: 0.95rem;
-    font-weight: 600;
+    color: #0f172a;
+    font-size: 1rem;
+    font-weight: 700;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
 }
 
 .actionButtons button:hover {
-    background-color: #007bff;
-    color: #fff;
-    box-shadow: 0 0 10px #007bff;
+    background-color: #38bdf8;
+    color: #0f172a;
+    box-shadow: 0 0 15px #38bdf8, 0 0 5px #0ea5e9 inset;
 }
 
-
+/* Footer */
 p {
     text-align: center;
-    color: #666;
+    color: #94a3b8;
     font-size: 0.85rem;
     margin-top: 2rem;
-}
-
-
-.loginPage::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 4px;
-    background: #007bff;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
 }

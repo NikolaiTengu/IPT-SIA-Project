@@ -1,31 +1,39 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
-const Student = require("./student.model");
-
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/StudentInformationSystem");
+const Student = require("./models/student.model");
+const User = require("./models/user.model");
+
+mongoose.connect("mongodb://localhost:27017/StudentInformationSystem")
+    .then(() => console.log("✅ Connected to MongoDB"))
+    .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-
 const port = 1337;
-const userFile = path.join(__dirname, "user.json");
 
-let students = [];
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
+app.use(cors(corsOptions));
+app.use(express.json());
+app.options('*', cors(corsOptions));
+
+// Logging function
 function logStudentData(action, student) {
     console.log(`${action} Student:`);
-    Object.entries(student).forEach(([key, value]) => console.log(`  ${key}: ${value}`));
+    Object.entries(student).forEach(([key, value]) =>
+        console.log(`  ${key}: ${value}`)
+    );
     console.log();
 }
 
-app.get("/", (req, res) => {
-    res.send("User Management API");
-});
-
+// ---------------------- Student Routes ----------------------
 app.get("/fetchstudentsmongo", async (req, res) => {
     try {
         const students = await Student.find();
@@ -39,14 +47,12 @@ app.get("/fetchstudentsmongo", async (req, res) => {
 app.post("/addstudentmongo", async (req, res) => {
     try {
         const { idnumber, firstname, lastname, middlename, course, year } = req.body;
-
         const newStudent = new Student({ idnumber, firstname, lastname, middlename, course, year });
-
         await newStudent.save();
-        return res.status(201).json({ message: "Student added successfully", student: newStudent });
+        res.status(201).json({ message: "Student added successfully", student: newStudent });
     } catch (error) {
         console.error("Error adding student:", error);
-        return res.status(500).json({ message: "Error adding student" });
+        res.status(500).json({ message: "Error adding student" });
     }
 });
 
@@ -54,16 +60,12 @@ app.put("/updatestudentmongo/:idnumber", async (req, res) => {
     try {
         const { idnumber } = req.params;
         const { firstname, lastname, middlename, course, year } = req.body;
-
         const updatedStudent = await Student.findOneAndUpdate(
             { idnumber },
-            { firstname, lastname, middlename, course, year }, 
+            { firstname, lastname, middlename, course, year },
             { new: true }
         );
-        if (!updatedStudent) {
-            return res.status(404).json({ message: "Student not found" });
-        }
-
+        if (!updatedStudent) return res.status(404).json({ message: "Student not found" });
         res.json({ message: "Student updated successfully", student: updatedStudent });
     } catch (error) {
         console.error("Error updating student:", error);
@@ -74,12 +76,8 @@ app.put("/updatestudentmongo/:idnumber", async (req, res) => {
 app.delete("/deletestudentmongo/:idnumber", async (req, res) => {
     try {
         const { idnumber } = req.params;
-
         const deletedStudent = await Student.findOneAndDelete({ idnumber });
-
-        if (!deletedStudent) {
-            return res.status(404).json({ message: "Student not found" });
-        }
+        if (!deletedStudent) return res.status(404).json({ message: "Student not found" });
 
         logStudentData("Deleted", deletedStudent);
         res.json({ message: "Student deleted successfully", student: deletedStudent });
@@ -89,79 +87,138 @@ app.delete("/deletestudentmongo/:idnumber", async (req, res) => {
     }
 });
 
-// User Management
-function loadUsers() {
+// ---------------------- User Routes (MongoDB) ----------------------
+app.get("/fetchusers", async (req, res) => {
     try {
-        return fs.existsSync(userFile) ? JSON.parse(fs.readFileSync(userFile)) : [];
+        const users = await User.find();
+        res.json(users);
     } catch (error) {
-        console.error("Error reading user data:", error);
-        return [];
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Error fetching users" });
     }
-}
+});
 
-function saveUsers(data) {
+app.post("/adduser", async (req, res) => {
     try {
-        fs.writeFileSync(userFile, JSON.stringify(data, null, 2));
+        const newUser = new User(req.body);
+        await newUser.save();
+        res.status(201).json(newUser);
     } catch (error) {
-        console.error("Error saving user data:", error);
-    }
-}
-
-app.get("/fetchusers", (req, res) => {
-    const users = loadUsers();
-    res.json(users);
-});
-
-app.post("/adduser", (req, res) => {
-    const users = loadUsers();
-    const newUser = { ...req.body };
-
-    users.push(newUser);
-    saveUsers(users);
-    res.status(201).json(newUser);
-});
-
-app.put("/updateuser/:id", (req, res) => {
-    const users = loadUsers();
-    const index = users.findIndex(user => user.id === req.params.id);
-
-    if (index === -1) {
-        return res.status(404).json({ error: "User not found" });
-    }
-
-    users[index] = { ...users[index], ...req.body };
-    saveUsers(users);
-    res.json(users[index]);
-});
-
-app.delete("/deleteuser/:id", (req, res) => {
-    let users = loadUsers();
-    const index = users.findIndex(user => user.id === req.params.id);
-
-    if (index === -1) {
-        return res.status(404).json({ error: "User not found" });
-    }
-
-    users.splice(index, 1);
-    saveUsers(users);
-    res.json({ message: "User deleted successfully" });
-});
-
-app.use(express.json());
-
-app.post("/login", (req, res) => {
-    const { email, password } = req.body;
-    const users = loadUsers();
-
-    const user = users.find(user => user.email === email && user.password === password);
-    
-    if (user) {
-        res.json({ success: true });
-    } else {
-        res.json({ success: false });
+        console.error("Error adding user:", error);
+        res.status(500).json({ message: "Error adding user" });
     }
 });
 
+app.put("/updateuser/:id", async (req, res) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedUser) return res.status(404).json({ error: "User not found" });
+        res.json(updatedUser);
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Error updating user" });
+    }
+});
+
+app.delete("/deleteuser/:id", async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if (!deletedUser) return res.status(404).json({ error: "User not found" });
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ message: "Error deleting user" });
+    }
+});
+
+// ---------------------- Auth Routes ----------------------
+app.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email, password });
+
+        if (user) {
+            res.json({
+                success: true,
+                message: "Login successful",
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    role: user.role
+                }
+            });
+        } else {
+            res.status(401).json({ success: false, message: "Invalid email or password" });
+        }
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ success: false, message: "Server error during login" });
+    }
+});
+
+app.post("/signup", async (req, res) => {
+    try {
+        const { email, password, firstname, lastname, middlename, role } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: "Email and password are required" });
+        }
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: "Email already exists" });
+        }
+
+        const newUser = new User({
+            email,
+            password,
+            firstname,
+            lastname,
+            middlename,
+            role: role || "user"
+        });
+
+        await newUser.save();
+
+        res.status(201).json({
+            success: true,
+            message: "User registered successfully",
+            user: {
+                id: newUser._id,
+                email: newUser.email,
+                firstname: newUser.firstname,
+                lastname: newUser.lastname,
+                role: newUser.role
+            }
+        });
+    } catch (error) {
+        console.error("Signup error:", error);
+        res.status(500).json({ success: false, message: "Server error during registration" });
+    }
+});
+
+// ---------------------- Health Check ----------------------
+app.get("/health", (req, res) => {
+    res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.get("/", (req, res) => {
+    res.send("User Management API");
+});
+
+// ---------------------- Global Error Handler ----------------------
+app.use((err, req, res, next) => {
+    console.error("Unhandled error:", err);
+    res.status(500).json({ 
+        success: false, 
+        message: "Internal server error", 
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+    });
+});
+
+// ---------------------- Start Server ----------------------
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`🚀 Server running on http://localhost:${port}`);
 });

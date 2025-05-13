@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Dashboard.css";
 import Sidebar from "./Sidebar";
-import assets from "../assets/jasmine_rice.jpg";
+import assets from "../assets/atlasacademy.jpg";
 import { Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { TextField } from "@mui/material";
 
@@ -36,6 +36,13 @@ function Dashboard() {
   }, []);
 
 
+  const handleLogout = () => {
+    // Clear user session (example: remove token from localStorage)
+    localStorage.removeItem("userToken");
+    // Redirect to login page
+    window.location.href = "/login";
+  };
+
   return (
     <div className="dash">
       <h1>Welcome to Atlas University!</h1>
@@ -45,6 +52,14 @@ function Dashboard() {
       </div>
       <img src={assets} alt="Rice" className="rice-image" />
       <Sidebar />
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleLogout}
+        style={{ position: "absolute", top: 20, right: 20 }}
+      >
+        Logout
+      </Button>
     </div>
   );
 }
